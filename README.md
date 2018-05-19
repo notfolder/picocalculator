@@ -13,7 +13,6 @@ calculator for home work
 BNF記法での文法定義を行い、文法定義に従った
 - LexerはStringTokenizerを使う
 - デザインパターンInterpreterを使用する
-- InterpreterパターンのContextクラスはjavaのIteratorインターフェースとする
 - 扱う数値は8桁の数値なので(2147483648)で十分だが、将来扱える型を拡張できるようgenericsを使用する
 
 BigDecimalなどの拡張を想定している.

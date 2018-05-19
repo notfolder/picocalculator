@@ -1,7 +1,14 @@
 package picocalculator.exceptions;
 
 public class ParsingErrorException extends Exception {
-	public ParsingErrorException(String message) {
+	private final int _index;
+
+	public ParsingErrorException(String message, int index) {
 		super(message);
+		_index = index;
+	}
+
+	public int getIndex() {
+		return _index;
 	}
 }

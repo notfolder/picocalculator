@@ -5,7 +5,8 @@ import java.util.function.BiFunction;
 public abstract class AbstractBiOperatorToken<T> extends AbstractToken<T> {
 	private BiFunction<T, T, T> _function;
 
-	public AbstractBiOperatorToken(BiFunction<T, T, T> function) {
+	public AbstractBiOperatorToken(int index, String str, BiFunction<T, T, T> function) {
+		super(index, str);
 		_function = function;
 	}
 

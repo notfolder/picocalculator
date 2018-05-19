@@ -3,7 +3,8 @@ package picocalculator.tokens;
 public class LiteralToken<T> extends AbstractToken<T> {
 	T _value;
 
-	public LiteralToken(T value) {
+	public LiteralToken(int index, String str, T value) {
+		super(index, str);
 		_value = value;
 	}
 
