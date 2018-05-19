@@ -11,17 +11,21 @@ calculator for home work
 
 # 実装方針
 BNF記法での文法定義を行い、文法定義に従った
-LexerはStringTokenizerを使う？
-→位置を表現する拡張のために、独自実装も検討
+- LexerはStringTokenizerを使う
+- デザインパターンInterpreterを使用する。
+- 扱う数値は8桁の数値なので(2147483648)で十分だが、将来扱える型を拡張できるようgenericsを使用する。
 
+BigDecimalなどの拡張を想定している。
 
 ## BNF
 
-    <expr> ::= <term> { + <term> | - <term> }*
+    <extpression> ::= <term> { + <term> | - <term> }*
     <term> ::= <factor> { * <factor> | / <factor> }*
-    <factor> ::= <literal> | ( <expr> )
+    <factor> ::= <literal> | ( <extpression> )
 
-# 実行方法
+上記BNFの左辺をExpressionクラスとして実装する。
+各演算子はgenericなTokenクラスとして実装する。
+  (lambdaを使えばもっとスマートに実装できたかも)
 
 ## 実行環境
 
