@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================
+     2018/05/19 12:43:10
+
+     project picocalculator
+     description calculator for home work
+
+     user notfolder
+     ====================================================================== -->
+<project name="picocalculator" default="makeJar" basedir=".">
+    <description>
+    	calculator for home work
+    </description>
+
+	<property name="jarname" value="PicoCalculator" />
+    <property name="dir.target" value="bin" />
+    <property name="dir.target.classes" value="${dir.target}/classes" />
+	<property name="dir.src" value="./src" />
+	<property name="src.enc" value="UTF-8" />
+	<dirname property="base" file="${ant.file}"/>
+
+	<path id="build.lib">
+	</path>
+
+    <target name="compile" description="コンパイル">
+        <echo message="コンパイルを開始します。" />
+        <mkdir dir="${dir.target.classes}"/>
+        <javac classpathref="build.lib"
+            srcdir="${dir.src}"
+            destdir="${dir.target.classes}"
+            encoding="${src.enc}"
+            source="1.8"
+            target="1.8"
+            includeAntRuntime="false"
+            debug="true"/>
+    </target>
+
+    <target name="makeJar" description="開発用JARファイル作成">
+        <!-- 作業用ディレクトリのcleanup -->
+        <antcall target="clean"/>
+        <antcall target="compile"/>
+        <echo message="JARファイルを作成します。" />
+        <jar basedir="${dir.target.classes}" destfile="${base}/${dir.target}/${jarname}.jar" />
+    </target>
+
+    <target name="clean" description="ビルド成果物削除">
+        <delete dir="${dir.target}" />
+    </target>
+
+</project>
