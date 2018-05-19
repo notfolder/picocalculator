@@ -3,6 +3,8 @@ package picocalculator;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import picocalculator.tokens.AbstractToken;
+
 public abstract class AbstractLexer<T> implements Context<T> {
 	private StringTokenizer _tokenizer = null;
 	private StringBuilder _current = new StringBuilder();
@@ -15,7 +17,7 @@ public abstract class AbstractLexer<T> implements Context<T> {
 	protected abstract AbstractToken<T> parseToken(String str);
 
 	@Override
-	public AbstractToken<T> nextToken() {
+	public AbstractToken<T> next() {
 		if (!_stack.isEmpty()) {
 			return _stack.pop();
 		}
@@ -25,8 +27,8 @@ public abstract class AbstractLexer<T> implements Context<T> {
 	}
 
 	@Override
-	public boolean isEnd() {
-		return !_tokenizer.hasMoreTokens();
+	public boolean hasNext() {
+		return _tokenizer.hasMoreTokens();
 	}
 
 	@Override

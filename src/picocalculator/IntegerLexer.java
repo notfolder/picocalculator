@@ -1,5 +1,22 @@
 package picocalculator;
 
+import picocalculator.tokens.AbstractToken;
+import picocalculator.tokens.DivisionToken;
+import picocalculator.tokens.LiteralToken;
+import picocalculator.tokens.MinusToken;
+import picocalculator.tokens.MultiToken;
+import picocalculator.tokens.ParenthesesEndToken;
+import picocalculator.tokens.ParenthesesStartToken;
+import picocalculator.tokens.PlusToken;
+
+/**
+*
+* Iteratorなので、内部でLexingをすべて実施してArrayListのIteratorに委譲してもよい。
+*
+* @author SATORU
+*
+* @param <T>
+*/
 public class IntegerLexer extends AbstractLexer<Integer> {
 
 	public IntegerLexer(String str) {
@@ -11,20 +28,28 @@ public class IntegerLexer extends AbstractLexer<Integer> {
 		char c = str.charAt(0);
 		switch (c) {
 		case '+':
-			return new TokenPlus<Integer>( (left, right) -> { return left + right; });
+			return new PlusToken<Integer>((left, right) -> {
+				return left + right;
+			});
 		case '-':
-			return new TokenMinus<Integer>( (left, right) -> { return left - right; });
+			return new MinusToken<Integer>((left, right) -> {
+				return left - right;
+			});
 		case '*':
-			return new TokenMulti<Integer>( (left, right) -> { return left * right; });
+			return new MultiToken<Integer>((left, right) -> {
+				return left * right;
+			});
 		case '/':
-			return new TokenDivision<Integer>( (left, right) -> { return left / right; });
+			return new DivisionToken<Integer>((left, right) -> {
+				return left / right;
+			});
 		case '(':
-			return new TokenParenthesesStart<Integer>();
+			return new ParenthesesStartToken<Integer>();
 		case ')':
-			return new TokenParenthesesEnd<Integer>();
+			return new ParenthesesEndToken<Integer>();
 		default:
 			// TODO: 8桁以上の数字だったら例外
-			return new TokenLiteral<Integer>(Integer.parseInt(str));
+			return new LiteralToken<Integer>(Integer.parseInt(str));
 		}
 	}
 }

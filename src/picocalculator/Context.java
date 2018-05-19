@@ -1,9 +1,9 @@
 package picocalculator;
 
-import java.util.NoSuchElementException;
+import java.util.Iterator;
 
-public interface Context<T> {
-	public AbstractToken<T> nextToken() throws NoSuchElementException, NumberFormatException;
-	public boolean isEnd();
+import picocalculator.tokens.AbstractToken;
+
+public interface Context<T> extends Iterator<AbstractToken<T>> {
 	public void pushToken(AbstractToken<T> token);
 }
