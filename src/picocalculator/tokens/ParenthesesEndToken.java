@@ -1,7 +1,19 @@
 package picocalculator.tokens;
 
-public class ParenthesesEndToken<T> extends AbstractToken<T> {
-
+/**
+ * 括弧')'をあらわすtoken
+ *
+ * @author notfolder
+ *
+ * @param <T>
+ */
+public class ParenthesesEndToken<T> extends AbstractFactorToken<T> {
+    /**
+     * コンストラクタ
+     *
+     * @param index このtokenの位置
+     * @param str このtokenの文字
+     */
     public ParenthesesEndToken(int index, String str) {
         super(index, str);
     }

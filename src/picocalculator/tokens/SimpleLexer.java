@@ -1,4 +1,4 @@
-package picocalculator.expressions;
+package picocalculator.tokens;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,16 +8,28 @@ import java.util.Stack;
 
 import picocalculator.Context;
 import picocalculator.exceptions.ParsingErrorException;
-import picocalculator.tokens.AbstractToken;
-import picocalculator.tokens.AbstractTokenFactory;
 
+/**
+ * 整数を扱うlexer
+ *
+ * @author notfolder
+ *
+ * @param <T> 計算に使用する型
+ */
 public class SimpleLexer<T> implements Context<T> {
+    /** 読み戻したtokenを保存するためのスタック */
     private Stack<AbstractToken<T>> _stack = new Stack<>();
+    /** 解析対象の文字列 */
     private String _string = "";
+    /** RPNを保持するためのtokenリスト */
     private List<AbstractToken<T>> _tokenList = new ArrayList<AbstractToken<T>>();
+    /** tokenを生成するfactory */
     private AbstractTokenFactory<T> _factory;
+    /** 現在解析中の文字の位置 */
     private int _index = 0;
+    /** 予約語(キャラクタ) */
     private static final char[] _reserved = "+-*/()".toCharArray();
+    /** あとで検索するためにsortしておく */
     static {
         Arrays.sort(_reserved);
     }
@@ -27,11 +39,22 @@ public class SimpleLexer<T> implements Context<T> {
         return _index;
     }
 
+    /**
+     * コンストラクタ
+     *
+     * @param str 解析対象の文字列
+     * @param factory tokenを作成するfactory
+     */
     public SimpleLexer(String str, AbstractTokenFactory<T> factory) {
         _string = str;
         _factory = factory;
     }
 
+    /**
+     * RPNを作成するためのtokenを追加するメソッド
+     *
+     * @param token RPNに追加するtoken
+     */
     public void addTokenList(AbstractToken<T> token) {
         _tokenList.add(token);
     }
@@ -68,10 +91,20 @@ public class SimpleLexer<T> implements Context<T> {
         return _hasNext();
     }
 
+    /**
+     * 内部用hasNext。読み戻しを考慮しない
+     *
+     * @return まだ読み込める文字がある場合true
+     */
     private boolean _hasNext() {
         return _index < _string.length();
     }
 
+    /**
+     * 次の文字列を取得する関数。lexerのメイン処理
+     *
+     * @return 次の文字列
+     */
     private String nextString() {
         trim();
         // 空白を読み飛ばした結果、tokenがないのでエラー
@@ -82,7 +115,7 @@ public class SimpleLexer<T> implements Context<T> {
         StringBuilder sb = new StringBuilder();
         char c = _string.charAt(_index++);
         sb.append(c);
-        // 次のtokenが予約語の場合
+        // 次のtokenが予約語の場合、その文字を返す
         if (Arrays.binarySearch(_reserved, c) >= 0) {
             return sb.toString();
         }
@@ -103,6 +136,9 @@ public class SimpleLexer<T> implements Context<T> {
         return sb.toString();
     }
 
+    /**
+     * 空白文字を読み飛ばす処理
+     */
     private void trim() {
         while (_hasNext()) {
             char c = _string.charAt(_index);
@@ -113,6 +149,12 @@ public class SimpleLexer<T> implements Context<T> {
         }
     }
 
+    /**
+     * 次のtokenを取得するメソッド
+     *
+     * @return 次のtoken
+     * @throws ParsingErrorException 文法誤りがあった際に投げる例外
+     */
     private AbstractToken<T> nextToken() throws ParsingErrorException {
         String str = nextString();
         try {

@@ -1,5 +1,12 @@
 package picocalculator.expressions;
 
+/**
+ * 整数値のみ、四則演算のみの構文解析用ParserのFactory
+ *
+ * @author notfolder
+ *
+ * @param <T> 計算を行う際の型
+ */
 public class SimpleParserFactory<T> extends AbstractParserFactory<T> {
 
     @Override

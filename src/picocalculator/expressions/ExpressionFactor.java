@@ -7,7 +7,20 @@ import picocalculator.tokens.LiteralToken;
 import picocalculator.tokens.ParenthesesEndToken;
 import picocalculator.tokens.ParenthesesStartToken;
 
+/**
+ * BNF構文における<factor>レベルの構文解析を行うParser
+ *
+ * @author notfolder
+ *
+ * @param <T> 計算を行う際の型
+ */
 public class ExpressionFactor<T> extends AbstractParser<T> {
+    /**
+     * コンストラクタ
+     *
+     * @param level 自クラスのBNF構文レベル
+     * @param factory 上位のparserを生成するためのFactory
+     */
     public ExpressionFactor(int level, AbstractParserFactory<T> factory) {
         super(level, factory);
     }

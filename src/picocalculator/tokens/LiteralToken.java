@@ -1,8 +1,23 @@
 package picocalculator.tokens;
 
+/**
+ * <literal>をあらわすtokenのクラス
+ *
+ * @author notfolder
+ *
+ * @param <T>
+ */
 public class LiteralToken<T> extends AbstractToken<T> {
-    T _value;
+    /** このtokenのliteral値 */
+    private T _value;
 
+    /**
+     * コンストラクタ
+     *
+     * @param index このtokenの位置
+     * @param str このtokenの文字列
+     * @param value このtokenのliteral値
+     */
     public LiteralToken(int index, String str, T value) {
         super(index, str);
         _value = value;

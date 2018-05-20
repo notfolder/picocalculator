@@ -1,5 +1,11 @@
 package picocalculator.tokens;
 
+/**
+ * 整数のみを扱うtokenを生成するfactory。
+ *
+ * @author notfolder
+ *
+ */
 public class IntegerTokenFactory extends AbstractTokenFactory<Integer> {
 
     @Override

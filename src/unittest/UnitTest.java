@@ -3,6 +3,10 @@ package unittest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.DynamicTest;
@@ -11,9 +15,12 @@ import org.junit.jupiter.api.TestFactory;
 
 import picocalculator.AbstractCalculatorFactory;
 import picocalculator.Context;
+import picocalculator.PicoCalculator;
 import picocalculator.SimpleCalculatorFactory;
 import picocalculator.exceptions.ParsingErrorException;
 import picocalculator.expressions.AbstractParser;
+import picocalculator.tokens.ParenthesesEndToken;
+import picocalculator.tokens.ParenthesesStartToken;
 
 class UnitTest {
 
@@ -30,6 +37,16 @@ class UnitTest {
     @Test
     void testException2() {
         testExecuteExceptionExpected("1+", 2);
+    }
+
+    @Test
+    void testException3() {
+        testExecuteExceptionExpected("1+(2", 4);
+    }
+
+    @Test
+    void testException4() {
+        testExecuteExceptionExpected("1+(2 ]", 6);
     }
 
     @TestFactory
@@ -73,5 +90,73 @@ class UnitTest {
             expr.interpret(context);
         });
         assertEquals(errorIndex, exception.getIndex());
+    }
+
+    @Test
+    void testParenthesesStartTokenEvalute() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            new ParenthesesStartToken<Integer>(0, "(").evalute(0, 0);
+        });
+    }
+
+    @Test
+    void testParenthesesStartTokenGetValue() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            new ParenthesesStartToken<Integer>(0, "(").getValue();
+        });
+    }
+
+    @Test
+    void testParenthesesEndTokenEvalute() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            new ParenthesesEndToken<Integer>(0, "(").evalute(0, 0);
+        });
+    }
+
+    @Test
+    void testParenthesesEndTokenGetValue() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            new ParenthesesEndToken<Integer>(0, "(").getValue();
+        });
+    }
+
+    /**
+     * 標準入力に対し、文字列入力を行う
+     */
+    public class StandardInputSnatcher extends InputStream {
+
+        private StringBuilder buffer = new StringBuilder();
+        private String _crlf = System.getProperty("line.separator");
+
+        /**
+         * 文字列を入力する。改行は自動的に行う
+         * @param str 入力文字列
+         */
+        public void inputln(String str) {
+            buffer.append(str).append(_crlf);
+        }
+
+        @Override
+        public int read() throws IOException {
+            if (buffer.length() == 0) {
+                return -1;
+            }
+            int result = buffer.charAt(0);
+            buffer.deleteCharAt(0);
+            return result;
+        }
+    }
+
+    @Test
+    void testMain() throws IOException {
+        StandardInputSnatcher in = new StandardInputSnatcher();
+        in.inputln("1+1");
+        in.inputln("1+");
+        in.inputln(".");
+        System.setIn(in);
+        System.setOut(new PrintStream(new ByteArrayOutputStream()));
+        PicoCalculator.main(new String[]{"--debug"});
+        System.setIn(null);
+        // TODO: ByteArrayOutputStreamの内容をチェックする必要があるが、取り急ぎ意図しない例外が発生しないことの確認のみ
     }
 }
