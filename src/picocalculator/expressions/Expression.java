@@ -10,28 +10,20 @@ public class Expression<T> extends AbstractExpression<T> {
     @Override
     public T interpret(Context<T> context) throws ParsingErrorException {
         AbstractExpression<T> left = new ExpressionTerm<T>();
-        T ret = left.interpret(context);
-        _topToken = left.getTopToken();
-        AbstractToken<T> prev = null;
+        T leftValue = left.interpret(context);
         while (context.hasNext()) {
             AbstractToken<T> token = context.next();
             // 次のtokenが+か-でなかったらtokenを戻して値を返す
             if (!(token instanceof AbstractExpressionToken)) {
                 context.pushToken(token);
-                return ret;
-            }
-            if (prev != null) {
-                prev.addChild(token);
-            } else {
-                _topToken = token;
-                token.addChild(left.getTopToken());
+                return leftValue;
             }
             AbstractExpression<T> right = new ExpressionTerm<T>();
-            ret = token.evalute(ret, right.interpret(context));
-            token.addChild(right.getTopToken());
-            prev = token;
+            T rightValue = right.interpret(context);
+            leftValue = token.evalute(leftValue, rightValue);
+            context.addTokenList(token);
         }
-        return ret;
+        return leftValue;
     }
 
 }

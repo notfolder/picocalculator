@@ -30,7 +30,7 @@ public class PicoCalculator {
                 int value = expr.interpret(context);
                 System.out.println(context.toString() + "=" + value);
                 if (_debug) {
-                    System.out.println(expr.printTokenTree());
+                    System.out.println(context.getRPN());
                 }
             } catch (ParsingErrorException e) {
                 System.out.println("式の形が正しくありません: " + e.toString());
@@ -41,7 +41,7 @@ public class PicoCalculator {
                 System.out.println(new String(cc) + "^-- この近くに誤りがあります");
                 // for debug
                 if (_debug) {
-                    System.out.println(expr.printTokenTree());
+                    System.out.println(context.getRPN());
                 }
             }
         } while (true);

@@ -15,26 +15,25 @@ public class ExpressionFactor<T> extends AbstractExpression<T> {
             throw new ParsingErrorException("数値か括弧'('が足りません", context.getIndex());
         }
         AbstractToken<T> token = context.next();
-        _topToken = token;
         if (token instanceof LiteralToken) {
+            context.addTokenList(token);
             return token.getValue();
         } else if (token instanceof ParenthesesStartToken) {
             // ( だったら中身を評価して
             AbstractExpression<T> expr = new Expression<T>();
             T ret = expr.interpret(context);
-            token.addChild(expr.getTopToken());
             // )があることを確認して
             if (!context.hasNext()) {
-                throw new ParsingErrorException("括弧')'が足りません", context.getIndex());
+                throw new ParsingErrorException("括弧')'が足りません: " + context.getRPN(), context.getIndex());
             }
             token = context.next();
             if (!(token instanceof ParenthesesEndToken)) {
-                throw new ParsingErrorException("括弧')'が必要です", token.getIndex());
+                throw new ParsingErrorException("括弧')'が必要です :" + context.getRPN(), token.getIndex());
             }
             // 値を返す
             return ret;
         } else {
-            throw new ParsingErrorException("数値か括弧'('を指定してください", token.getIndex());
+            throw new ParsingErrorException("数値か括弧'('を指定してください: " + context.getRPN(), token.getIndex());
         }
     }
 

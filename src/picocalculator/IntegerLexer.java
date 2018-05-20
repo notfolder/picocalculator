@@ -34,6 +34,14 @@ public class IntegerLexer extends AbstractLexer<Integer> {
 
     @Override
     public boolean hasNext() {
+        trim();
+        if (!_stack.isEmpty()) {
+            return true;
+        }
+        return _hasNext();
+    }
+
+    private boolean _hasNext() {
         return _index < _string.length();
     }
 
@@ -69,7 +77,7 @@ public class IntegerLexer extends AbstractLexer<Integer> {
     }
 
     private void trim() {
-        while (hasNext()) {
+        while (_hasNext()) {
             char c = _string.charAt(_index);
             if (!Character.isWhitespace(c)) {
                 break;
@@ -109,13 +117,13 @@ public class IntegerLexer extends AbstractLexer<Integer> {
             try {
                 return new LiteralToken<Integer>(current, str, Integer.parseInt(str));
             } catch (NumberFormatException e) {
-                throw new ParsingErrorException("数値ではありません", _index);
+                throw new ParsingErrorException("数値ではありません: " + getRPN(), _index);
             }
         }
     }
 
-    @Override
-    public AbstractToken<Integer> currentToken() {
-        return _currentToken;
-    }
+//    @Override
+//    public AbstractToken<Integer> currentToken() {
+//        return _currentToken;
+//    }
 }

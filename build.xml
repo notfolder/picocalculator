@@ -34,7 +34,7 @@
             target="1.8"
             includeAntRuntime="false"
             debug="true">
-            <exclude name="**/UnitTest.java" />
+            <exclude name="unittest/*" />
         </javac>
     </target>
 
