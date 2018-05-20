@@ -27,12 +27,15 @@
         <mkdir dir="${dir.target.classes}"/>
         <javac classpathref="build.lib"
             srcdir="${dir.src}"
+            sourcepath=""
             destdir="${dir.target.classes}"
             encoding="${src.enc}"
             source="1.8"
             target="1.8"
             includeAntRuntime="false"
-            debug="true"/>
+            debug="true">
+            <exclude name="**/UnitTest.java" />
+        </javac>
     </target>
 
     <target name="makeJar" description="開発用JARファイル作成">
