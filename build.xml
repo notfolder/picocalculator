@@ -9,18 +9,18 @@
      ====================================================================== -->
 <project name="picocalculator" default="makeJar" basedir=".">
     <description>
-    	calculator for home work
+        calculator for home work
     </description>
 
-	<property name="jarname" value="PicoCalculator" />
+    <property name="jarname" value="PicoCalculator" />
     <property name="dir.target" value="bin" />
     <property name="dir.target.classes" value="${dir.target}/classes" />
-	<property name="dir.src" value="./src" />
-	<property name="src.enc" value="UTF-8" />
-	<dirname property="base" file="${ant.file}"/>
+    <property name="dir.src" value="./src" />
+    <property name="src.enc" value="UTF-8" />
+    <dirname property="base" file="${ant.file}"/>
 
-	<path id="build.lib">
-	</path>
+    <path id="build.lib">
+    </path>
 
     <target name="compile" description="コンパイル">
         <echo message="コンパイルを開始します。" />
@@ -40,7 +40,11 @@
         <antcall target="clean"/>
         <antcall target="compile"/>
         <echo message="JARファイルを作成します。" />
-        <jar basedir="${dir.target.classes}" destfile="${base}/${dir.target}/${jarname}.jar" />
+        <jar basedir="${dir.target.classes}" destfile="${base}/${dir.target}/${jarname}.jar">
+            <manifest>
+                <attribute name="Main-Class" value="picocalculator.PicoCalculator"/>
+            </manifest>
+        </jar>
     </target>
 
     <target name="clean" description="ビルド成果物削除">

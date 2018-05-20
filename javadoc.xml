@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="protected" additionalparam=" -encoding UTF-8&#13;&#10;-charset UTF-8" author="false" classpath="." destdir="doc" doctitle="PicoCalculator" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="picocalculator.exceptions,picocalculator.expressions,picocalculator.tokens,picocalculator" source="1.8" sourcepath="src" splitindex="false" use="false" version="false"/>
+    </target>
+</project>
