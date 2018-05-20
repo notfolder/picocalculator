@@ -81,7 +81,7 @@ SimpleCalcuratorFactoryは問題3で出題された、8桁までの整数のみ�
 factorの変数サポートを追加するだけで、簡易に変数をサポートした実装が可能なように考慮してある。
 (変数の保持をどこでするかという設計問題が残っている)
 
-    level0: <statement> ::= <variable> { = <extpression> }*
+    level0: <statement> ::= <variable> = <expression> | <expression>
     level1: <extpression> ::= <term> { + <term> | - <term> }*
     level2: <term> ::= <factor> { * <factor> | / <factor> }*
     level3: <factor> ::= <literal> | <variable> | ( <extpression> )
