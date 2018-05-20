@@ -22,9 +22,9 @@ BigDecimalなどの拡張を想定している.
 
 ## BNF
 
-    <extpression> ::= <term> { + <term> | - <term> }*
-    <term> ::= <factor> { * <factor> | / <factor> }*
-    <factor> ::= <literal> | ( <extpression> )
+    level0: <extpression> ::= <term> { + <term> | - <term> }*
+    level1: <term> ::= <factor> { * <factor> | / <factor> }*
+    level2: <factor> ::= <literal> | ( <extpression> )
 
 上記BNFの左辺をExpressionクラスとして実装する.
 各演算子はgenericなTokenクラスとして実装する.

@@ -7,7 +7,10 @@ import picocalculator.tokens.LiteralToken;
 import picocalculator.tokens.ParenthesesEndToken;
 import picocalculator.tokens.ParenthesesStartToken;
 
-public class ExpressionFactor<T> extends AbstractExpression<T> {
+public class ExpressionFactor<T> extends AbstractParser<T> {
+    public ExpressionFactor(int level, AbstractParserFactory<T> factory) {
+        super(level, factory);
+    }
 
     @Override
     public T interpret(Context<T> context) throws ParsingErrorException {
@@ -20,7 +23,7 @@ public class ExpressionFactor<T> extends AbstractExpression<T> {
             return token.getValue();
         } else if (token instanceof ParenthesesStartToken) {
             // ( だったら中身を評価して
-            AbstractExpression<T> expr = new Expression<T>();
+            AbstractParser<T> expr = _factory.createParser(getLevel()+1);
             T ret = expr.interpret(context);
             // )があることを確認して
             if (!context.hasNext()) {

@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import picocalculator.exceptions.ParsingErrorException;
-import picocalculator.expressions.Expression;
+import picocalculator.expressions.AbstractParser;
 
 public class PicoCalculator {
     private static boolean _debug = false;
@@ -24,8 +24,9 @@ public class PicoCalculator {
             if (str.equals(".")) {
                 break;
             }
-            Context<Integer> context = new IntegerLexer(str);
-            Expression<Integer> expr = new Expression<Integer>();
+            AbstractCalculatorFactory<Integer> factory = new SimpleCalculatorFactory();
+            AbstractParser<Integer> expr = factory.createParser();
+            Context<Integer> context = factory.createContext(str);
             try {
                 int value = expr.interpret(context);
                 System.out.println(context.toString() + "=" + value);
@@ -33,7 +34,7 @@ public class PicoCalculator {
                     System.out.println(context.getRPN());
                 }
             } catch (ParsingErrorException e) {
-                System.out.println("式の形が正しくありません: " + e.toString());
+                System.out.println("式の形が正しくありません: " + e.getMessage());
                 System.out.println(context.toString());
                 // index分だけスペース作成
                 char[] cc = new char[e.getIndex()];

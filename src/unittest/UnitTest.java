@@ -9,10 +9,11 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
+import picocalculator.AbstractCalculatorFactory;
 import picocalculator.Context;
-import picocalculator.IntegerLexer;
+import picocalculator.SimpleCalculatorFactory;
 import picocalculator.exceptions.ParsingErrorException;
-import picocalculator.expressions.Expression;
+import picocalculator.expressions.AbstractParser;
 
 class UnitTest {
 
@@ -23,7 +24,7 @@ class UnitTest {
 
     @Test
     void testException1() {
-        testExecuteExceptionExpected("1++1", 2);
+        testExecuteExceptionExpected("1++1", 3);
     }
 
     @Test
@@ -56,16 +57,18 @@ class UnitTest {
     }
 
     void testExecute(String str, String rpn, int answer) throws ParsingErrorException {
-        Context<Integer> context = new IntegerLexer(str);
-        Expression<Integer> expr = new Expression<Integer>();
+        AbstractCalculatorFactory<Integer> factory = new SimpleCalculatorFactory();
+        AbstractParser<Integer> expr = factory.createParser();
+        Context<Integer> context = factory.createContext(str);
         int value = expr.interpret(context);
         assertEquals(answer, value);
         assertEquals(rpn, context.getRPN());
     }
 
     void testExecuteExceptionExpected(String str, int errorIndex) {
-        Context<Integer> context = new IntegerLexer(str);
-        Expression<Integer> expr = new Expression<Integer>();
+        AbstractCalculatorFactory<Integer> factory = new SimpleCalculatorFactory();
+        AbstractParser<Integer> expr = factory.createParser();
+        Context<Integer> context = factory.createContext(str);
         ParsingErrorException exception = assertThrows(ParsingErrorException.class, () -> {
             expr.interpret(context);
         });

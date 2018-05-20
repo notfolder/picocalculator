@@ -5,12 +5,19 @@ import picocalculator.exceptions.ParsingErrorException;
 import picocalculator.tokens.AbstractExpressionToken;
 import picocalculator.tokens.AbstractToken;
 
-public class Expression<T> extends AbstractExpression<T> {
+public class Expression<T> extends AbstractParser<T> {
+    private final AbstractParser<T> _left;
+    private final AbstractParser<T> _right;
+
+    public Expression(int level, AbstractParserFactory<T> factory) {
+        super(level, factory);
+        _left = _factory.createParser(getLevel()+1);
+        _right = _factory.createParser(getLevel()+1);
+    }
 
     @Override
     public T interpret(Context<T> context) throws ParsingErrorException {
-        AbstractExpression<T> left = new ExpressionTerm<T>();
-        T leftValue = left.interpret(context);
+        T leftValue = _left.interpret(context);
         while (context.hasNext()) {
             AbstractToken<T> token = context.next();
             // 次のtokenが+か-でなかったらtokenを戻して値を返す
@@ -18,8 +25,7 @@ public class Expression<T> extends AbstractExpression<T> {
                 context.pushToken(token);
                 return leftValue;
             }
-            AbstractExpression<T> right = new ExpressionTerm<T>();
-            T rightValue = right.interpret(context);
+            T rightValue = _right.interpret(context);
             leftValue = token.evalute(leftValue, rightValue);
             context.addTokenList(token);
         }
