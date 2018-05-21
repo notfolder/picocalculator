@@ -16,8 +16,8 @@ import org.junit.jupiter.api.TestFactory;
 
 import picocalculator.AbstractCalculatorFactory;
 import picocalculator.Context;
+import picocalculator.DoubleCalculatorFactory;
 import picocalculator.PicoCalculator;
-import picocalculator.SimpleCalculatorFactory;
 import picocalculator.exceptions.ParsingErrorException;
 import picocalculator.expressions.AbstractParser;
 import picocalculator.tokens.ParenthesesEndToken;
@@ -85,8 +85,9 @@ class UnitTest {
 
     @BeforeAll
     static void setup() {
-        _factory = new SimpleCalculatorFactory();
+        //_factory = new SimpleCalculatorFactory();
         //_factory = new BigDecimalCalculatorFactory();
+        _factory = new DoubleCalculatorFactory();
     }
 
     void testExecute(String str, String rpn, int answer) throws ParsingErrorException {

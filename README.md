@@ -58,6 +58,7 @@ JavaSE-1.8のランタイムがインストールされている環境のプロ�
 - --factory:[ファクトリクラス名]で使用するファクトリを変更できる
   - SimpleCalculatorFactory 8桁までの整数のみ
   - BigDecimalCalculatorFactory BigDecimalを使用した、可変精度の電卓
+  - DoubleCalculatorFactory doubleを使用した、浮動小数点対応の電卓
 
 # ソースコードの説明
 
