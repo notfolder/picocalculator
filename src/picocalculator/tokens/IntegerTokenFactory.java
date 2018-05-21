@@ -33,9 +33,11 @@ public class IntegerTokenFactory extends AbstractTokenFactory<Integer> {
         case ')':
             return new ParenthesesEndToken<Integer>(index, str);
         default:
-            // TODO: 8桁以上の数字だったら例外
-            return new LiteralToken<Integer>(index, str, Integer.parseInt(str));
+        	Integer val = Integer.parseInt(str);
+        	if (Math.abs(val) > 99999999) {
+        		throw new NumberFormatException("8桁以上の数値です");
+        	}
+            return new LiteralToken<Integer>(index, str, val);
         }
     }
-
 }

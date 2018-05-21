@@ -46,12 +46,18 @@ class UnitTest {
 
     @Test
     void testException4() {
-        testExecuteExceptionExpected("1+(2 ]", 6);
+        testExecuteExceptionExpected("1+(2 *", 6);
+    }
+
+    @Test
+    void testException5() {
+        testExecuteExceptionExpected("9999999999", 10);
     }
 
     @TestFactory
     Iterable<DynamicTest> dynamicTestNormal() {
         return Arrays.asList(
+                dynamicTest("マイナス値:        -1+3",       () -> { testExecute("-1+3",         "[-1, 3, +]", 2);}),
                 // 四則演算正常系
                 dynamicTest("足し算1つ:         1+2",        () -> { testExecute("1+2",         "[1, 2, +]", 3);}),
                 dynamicTest("足し算2つ:         1+2+3",      () -> { testExecute("1+2+3",       "[1, 2, +, 3, +]", 6);}),
@@ -148,7 +154,7 @@ class UnitTest {
     }
 
     @Test
-    void testMain() throws IOException {
+    void testMainDebug() throws IOException {
         StandardInputSnatcher in = new StandardInputSnatcher();
         in.inputln("1+1");
         in.inputln("1+");
@@ -156,6 +162,19 @@ class UnitTest {
         System.setIn(in);
         System.setOut(new PrintStream(new ByteArrayOutputStream()));
         PicoCalculator.main(new String[]{"--debug"});
+        System.setIn(null);
+        // TODO: ByteArrayOutputStreamの内容をチェックする必要があるが、取り急ぎ意図しない例外が発生しないことの確認のみ
+    }
+    @Test
+
+    void testMainNormal() throws IOException {
+        StandardInputSnatcher in = new StandardInputSnatcher();
+        in.inputln("1+1");
+        in.inputln("1+");
+        in.inputln(".");
+        System.setIn(in);
+        System.setOut(new PrintStream(new ByteArrayOutputStream()));
+        PicoCalculator.main(new String[]{});
         System.setIn(null);
         // TODO: ByteArrayOutputStreamの内容をチェックする必要があるが、取り急ぎ意図しない例外が発生しないことの確認のみ
     }
