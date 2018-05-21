@@ -32,14 +32,22 @@ public class IntegerTokenFactory extends AbstractTokenFactory<Integer> {
             return new ParenthesesStartToken<Integer>(index, str);
         case ')':
             return new ParenthesesEndToken<Integer>(index, str);
+        case '=':
+            return new EqualToken<Integer>(index, str);
         default:
-            Integer val = Integer.parseInt(str);
-            if (Math.abs(val) > 99999999) {
-                throw new NumberFormatException("8桁以上の数値です");
+            if (Character.isDigit(c)) {
+                Integer val = Integer.parseInt(str);
+                if (Math.abs(val) > 99999999) {
+                    throw new NumberFormatException("8桁以上の数値です");
+                }
+                return new LiteralToken<Integer>(index, str, val, (value) -> {
+                    return -1 * value;
+                });
+            } else {
+                return new VariableToken<Integer>(index, str, null, (value) -> {
+                    return -1 * value;
+                }, _variables);
             }
-            return new LiteralToken<Integer>(index, str, val, (value) -> {
-                return -1 * value;
-            });
         }
     }
 }

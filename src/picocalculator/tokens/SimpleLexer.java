@@ -28,7 +28,7 @@ public class SimpleLexer<T> implements Context<T> {
     /** 現在解析中の文字の位置 */
     private int _index = 0;
     /** 予約語(キャラクタ) */
-    private static final char[] _reserved = "+-*/()".toCharArray();
+    private static final char[] _reserved = "+-*/()=".toCharArray();
     /** あとで検索するためにsortしておく */
     static {
         Arrays.sort(_reserved);

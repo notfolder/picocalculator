@@ -35,4 +35,13 @@ public abstract class AbstractBiOperatorToken<T> extends AbstractToken<T> {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void setValue(T value) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setMinus() {
+        throw new UnsupportedOperationException();
+    }
 }

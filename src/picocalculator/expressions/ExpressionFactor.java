@@ -7,6 +7,7 @@ import picocalculator.tokens.LiteralToken;
 import picocalculator.tokens.MinusToken;
 import picocalculator.tokens.ParenthesesEndToken;
 import picocalculator.tokens.ParenthesesStartToken;
+import picocalculator.tokens.VariableToken;
 
 /**
  * BNF構文における<factor>レベルの構文解析を行うParser
@@ -44,10 +45,10 @@ public class ExpressionFactor<T> extends AbstractParser<T> {
             token = context.next();
         }
 
-        if (token instanceof LiteralToken) {
+        if (token instanceof LiteralToken || token instanceof VariableToken) {
             context.addTokenList(token);
             if (sign == -1) {
-                ((LiteralToken<T>) token).setMinus();
+                token.setMinus();
             }
             return token.getValue();
         } else if (token instanceof ParenthesesStartToken) {

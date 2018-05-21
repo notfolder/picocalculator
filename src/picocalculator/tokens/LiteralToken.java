@@ -20,7 +20,7 @@ public class LiteralToken<T> extends AbstractToken<T> {
      *
      * @param index このtokenの位置
      * @param str このtokenの文字列
-     * @param value このtokenのliteral値
+     * @param value このtokenのliteral値(nullの場合は変数名)
      * @param function マイナス計算をするための関数オブジェクト
      */
     public LiteralToken(int index, String str, T value, Function<T, T> function) {
@@ -29,6 +29,7 @@ public class LiteralToken<T> extends AbstractToken<T> {
         _function = function;
     }
 
+    @Override
     public void setMinus() {
         _value = _function.apply(_value);
     }
@@ -43,4 +44,8 @@ public class LiteralToken<T> extends AbstractToken<T> {
         return _value;
     }
 
+    @Override
+    public void setValue(T value) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 }

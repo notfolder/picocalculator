@@ -20,6 +20,7 @@ public abstract class AbstractCalculatorFactory<T> {
         _registor.put("SimpleCalculatorFactory", SimpleCalculatorFactory.class);
         _registor.put("BigDecimalCalculatorFactory", BigDecimalCalculatorFactory.class);
         _registor.put("DoubleCalculatorFactory", DoubleCalculatorFactory.class);
+        _registor.put("VariableBigDecimalCalculatorFactory", VariableBigDecimalCalculatorFactory.class);
     }
 
     /**

@@ -37,7 +37,7 @@ Java SE 8
 
 ## ビルド方法
 
-Antのビルドファイル「build。xml」を用意してあるため、これを使用する。
+Antのビルドファイル「build.xml」を用意してあるため、これを使用する。
 Antコマンドを導入後、プロジェクトディレクトリで下記コマンドを実行する。
 
     ant
@@ -59,6 +59,7 @@ JavaSE-1.8のランタイムがインストールされている環境のプロ�
   - SimpleCalculatorFactory 8桁までの整数のみ
   - BigDecimalCalculatorFactory BigDecimalを使用した、可変精度の電卓
   - DoubleCalculatorFactory doubleを使用した、浮動小数点対応の電卓
+  - VariableBigDecimalCalculatorFactory BigDecimalを使用し、変数に対応した電卓
 
 # ソースコードの説明
 
@@ -85,7 +86,7 @@ SimpleCalcuratorFactoryは問題3で出題された、8桁までの整数のみ�
 これによって文法解析の拡張時に既存Expressionを流用可能となるように考慮してある。
 たとえば、変数をサポートした文法に対応するには下記の文法に従って、statementのレベルを追加、
 factorの変数サポートを追加するだけで、簡易に変数をサポートした実装が可能なように考慮してある。
-(変数の保持をどこでするかという設計問題が残っている)
+変数に対応した下記文法に沿ったParserも実装した
 
     level0: <statement> ::= <variable> = <expression> | <expression>
     level1: <extpression> ::= <term> { + <term> | - <term> }*

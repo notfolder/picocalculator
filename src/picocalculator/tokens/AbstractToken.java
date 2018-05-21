@@ -1,5 +1,7 @@
 package picocalculator.tokens;
 
+import picocalculator.exceptions.ParsingErrorException;
+
 /**
  * tokenをあらわす抽象クラス
  *
@@ -28,8 +30,17 @@ public abstract class AbstractToken<T> {
      *
      * @return リテラル値
      * @throws UnsupportedOperationException そのトークンでリテラル値を持っていない際に投げる例外
+     * @throws ParsingErrorException
      */
-    public abstract T getValue() throws UnsupportedOperationException;
+    public abstract T getValue() throws UnsupportedOperationException, ParsingErrorException;
+
+    /**
+     * 変数値の設定
+     *
+     * @param value 設定する値
+     * @throws UnsupportedOperationException そのトークンに値がセットできない際に投げる例外
+     */
+    public abstract void setValue(T value) throws UnsupportedOperationException;
 
     /**
      * コンストラクタ
@@ -50,6 +61,12 @@ public abstract class AbstractToken<T> {
     public int getIndex() {
         return _index;
     }
+
+    /**
+     * そのトークンの前に-がついていることをセットするメソッド
+     */
+    public abstract void setMinus();
+
 
     @Override
     public String toString() {

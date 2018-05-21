@@ -1,5 +1,8 @@
 package picocalculator.tokens;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * tokenを生成するFactoryの抽象クラス
  *
@@ -8,6 +11,9 @@ package picocalculator.tokens;
  * @param <T> 計算を行う際の型
  */
 public abstract class AbstractTokenFactory<T> {
+    /** 変数値を持つMap */
+    protected Map<String, T> _variables = new HashMap<String, T>();
+
     /**
      * トークンを生成するメソッド
      *

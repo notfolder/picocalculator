@@ -25,10 +25,18 @@ public class DoubleTokenFactory extends AbstractTokenFactory<Double> {
             return new ParenthesesStartToken<Double>(index, str);
         case ')':
             return new ParenthesesEndToken<Double>(index, str);
+        case '=':
+            return new EqualToken<Double>(index, str);
         default:
-            return new LiteralToken<Double>(index, str, Double.parseDouble(str), (value) -> {
-                return -1 * value;
-            });
+            if (Character.isDigit(c)) {
+                return new LiteralToken<Double>(index, str, Double.parseDouble(str), (value) -> {
+                    return -1 * value;
+                });
+            } else {
+                return new VariableToken<Double>(index, str, null, (value) -> {
+                    return -1 * value;
+                }, _variables);
+            }
         }
     }
 }

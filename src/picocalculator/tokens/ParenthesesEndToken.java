@@ -27,4 +27,13 @@ public class ParenthesesEndToken<T> extends AbstractFactorToken<T> {
     public T getValue() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void setValue(T value) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+    @Override
+    public void setMinus() {
+        throw new UnsupportedOperationException();
+    }
 }
