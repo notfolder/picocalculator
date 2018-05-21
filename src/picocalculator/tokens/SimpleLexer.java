@@ -160,7 +160,7 @@ public class SimpleLexer<T> implements Context<T> {
         try {
             return _factory.createToken(str, _index);
         } catch (NumberFormatException e) {
-            throw new ParsingErrorException("数値ではありません: " + getRPN(), _index);
+            throw new ParsingErrorException("数値の形式がただしくありません: " + getRPN(), _index);
         }
     }
 
