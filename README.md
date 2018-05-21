@@ -11,14 +11,14 @@ calculator for home work
 
 # 実装方針
 BNF記法での文法定義を行い、文法定義に従った
-- LexerはStringTokenizerを使う
+- Lexerは簡易的なものを自作した
 - デザインパターンInterpreterを使用する
 - 扱う数値は8桁の数値なので(2147483648)で十分だが、将来扱える型を拡張できるようgenericsを使用する
 - 演算子を表現するtokenの実装をFunctionオブジェクトを使用した。
   これによって各型をoperationするtokenを実装しなくてよい
   (Lexerにてtoken作成時にFunctionオブジェクトで演算処理を渡すことにしたため)
 
-BigDecimalなどの拡張を想定している。
+BigDecimalの拡張を実装した。
 
 ## BNF
 
@@ -53,6 +53,11 @@ JavaSE-1.8のランタイムがインストールされている環境のプロ�
 式を入力してエンターで計算結果を出力する。
 
 「.」のみ入力してエンターで終了する。
+
+- --debugでデバッグ出力あり。逆ポーランド記法での構文解析結果が得られる
+- --factory:[ファクトリクラス名]で使用するファクトリを変更できる
+  - SimpleCalculatorFactory 8桁までの整数のみ
+  - BigDecimalCalculatorFactory BigDecimalを使用した、可変精度の電卓
 
 # ソースコードの説明
 

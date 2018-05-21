@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -58,6 +59,7 @@ class UnitTest {
     Iterable<DynamicTest> dynamicTestNormal() {
         return Arrays.asList(
                 dynamicTest("マイナス値:        -1+3",       () -> { testExecute("-1+3",         "[-, 1, 3, +]", 2);}),
+                dynamicTest("マイナス値:        3*-2",       () -> { testExecute("3*-2",         "[3, -, 2, *]", -6);}),
                 // 四則演算正常系
                 dynamicTest("足し算1つ:         1+2",        () -> { testExecute("1+2",         "[1, 2, +]", 3);}),
                 dynamicTest("足し算2つ:         1+2+3",      () -> { testExecute("1+2+3",       "[1, 2, +, 3, +]", 6);}),
@@ -79,19 +81,25 @@ class UnitTest {
         );
     }
 
+    private static AbstractCalculatorFactory _factory = null;
+
+    @BeforeAll
+    static void setup() {
+        _factory = new SimpleCalculatorFactory();
+        //_factory = new BigDecimalCalculatorFactory();
+    }
+
     void testExecute(String str, String rpn, int answer) throws ParsingErrorException {
-        AbstractCalculatorFactory<Integer> factory = new SimpleCalculatorFactory();
-        AbstractParser<Integer> expr = factory.createParser();
-        Context<Integer> context = factory.createContext(str);
-        int value = expr.interpret(context);
+        AbstractParser expr = _factory.createParser();
+        Context context = _factory.createContext(str);
+        int value = Integer.parseInt(expr.interpret(context).toString());
         assertEquals(answer, value);
         assertEquals(rpn, context.getRPN());
     }
 
     void testExecuteExceptionExpected(String str, int errorIndex) {
-        AbstractCalculatorFactory<Integer> factory = new SimpleCalculatorFactory();
-        AbstractParser<Integer> expr = factory.createParser();
-        Context<Integer> context = factory.createContext(str);
+        AbstractParser<Integer> expr = _factory.createParser();
+        Context<Integer> context = _factory.createContext(str);
         ParsingErrorException exception = assertThrows(ParsingErrorException.class, () -> {
             expr.interpret(context);
         });
@@ -154,7 +162,7 @@ class UnitTest {
     }
 
     @Test
-    void testMainDebug() throws IOException {
+    void testMainDebug() throws IOException, InstantiationException, IllegalAccessException {
         StandardInputSnatcher in = new StandardInputSnatcher();
         in.inputln("1+1");
         in.inputln("1+");
@@ -167,7 +175,7 @@ class UnitTest {
     }
     @Test
 
-    void testMainNormal() throws IOException {
+    void testMainNormal() throws IOException, InstantiationException, IllegalAccessException {
         StandardInputSnatcher in = new StandardInputSnatcher();
         in.inputln("1+1");
         in.inputln("1+");

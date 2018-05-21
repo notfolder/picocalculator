@@ -24,18 +24,26 @@ public class PicoCalculator {
      *
      * @param args 引数。--debugを指定するとデバッグモードで動作する
      * @throws IOException 標準入力からのエラー発生時に投げる
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
-    public static void main(String[] args) throws IOException {
-        // 起動時引数に--debugがあればデバッグモード
-        if (args.length >= 1 && args[0].equals("--debug")) {
-            _debug = true;
+    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
+        String factoryName = "SimpleCalculatorFactory";
+        for (String arg : args) {
+            if (arg.equals("--debug")) {
+                _debug = true;
+            }
+            if (arg.startsWith("--factory:")) {
+                factoryName = arg.substring(10);
+            }
         }
+        // ファクトリを生成
+        AbstractCalculatorFactory factory = AbstractCalculatorFactory.createFactory(factoryName);
+
         InputStreamReader is = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(is);
 
-        // ファクトリを生成してパーサーを作成する
-        AbstractCalculatorFactory<Integer> factory = new SimpleCalculatorFactory();
-        AbstractParser<Integer> expr = factory.createParser();
+        AbstractParser expr = factory.createParser();
         do {
             System.out.println("式を入力してください.(「.」のみで終了します)");
             String str = br.readLine();
@@ -43,10 +51,9 @@ public class PicoCalculator {
                 break;
             }
             // Lexerを作成してParserを呼び出し、計算させる
-            Context<Integer> context = factory.createContext(str);
+            Context context = factory.createContext(str);
             try {
-                int value = expr.interpret(context);
-                System.out.println(context.toString() + "=" + value);
+                System.out.println(context.toString() + "=" + expr.interpret(context));
                 if (_debug) {
                     // デバッグ用逆ポーランド記法出力
                     System.out.println(context.getRPN());
