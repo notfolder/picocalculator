@@ -4,6 +4,7 @@ import picocalculator.Context;
 import picocalculator.exceptions.ParsingErrorException;
 import picocalculator.tokens.AbstractToken;
 import picocalculator.tokens.LiteralToken;
+import picocalculator.tokens.MinusToken;
 import picocalculator.tokens.ParenthesesEndToken;
 import picocalculator.tokens.ParenthesesStartToken;
 
@@ -31,12 +32,27 @@ public class ExpressionFactor<T> extends AbstractParser<T> {
             throw new ParsingErrorException("数値か括弧'('が足りません", context.getIndex());
         }
         AbstractToken<T> token = context.next();
+
+        // マイナスで始まる数値
+        int sign = 1;
+        if (token instanceof MinusToken) {
+            sign = -1;
+            context.addTokenList(token);
+            if (!context.hasNext()) {
+                throw new ParsingErrorException("数値か括弧'('が足りません", context.getIndex());
+            }
+            token = context.next();
+        }
+
         if (token instanceof LiteralToken) {
             context.addTokenList(token);
+            if (sign == -1) {
+                ((LiteralToken<T>) token).setMinus();
+            }
             return token.getValue();
         } else if (token instanceof ParenthesesStartToken) {
             // ( だったら中身を評価して
-            AbstractParser<T> expr = _factory.createParser(getLevel()+1);
+            AbstractParser<T> expr = _factory.createParser(getLevel() + 1);
             T ret = expr.interpret(context);
             // )があることを確認して
             if (!context.hasNext()) {
@@ -52,5 +68,4 @@ public class ExpressionFactor<T> extends AbstractParser<T> {
             throw new ParsingErrorException("数値か括弧'('を指定してください: " + context.getRPN(), token.getIndex());
         }
     }
-
 }

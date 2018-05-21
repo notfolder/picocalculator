@@ -57,7 +57,7 @@ class UnitTest {
     @TestFactory
     Iterable<DynamicTest> dynamicTestNormal() {
         return Arrays.asList(
-                dynamicTest("マイナス値:        -1+3",       () -> { testExecute("-1+3",         "[-1, 3, +]", 2);}),
+                dynamicTest("マイナス値:        -1+3",       () -> { testExecute("-1+3",         "[-, 1, 3, +]", 2);}),
                 // 四則演算正常系
                 dynamicTest("足し算1つ:         1+2",        () -> { testExecute("1+2",         "[1, 2, +]", 3);}),
                 dynamicTest("足し算2つ:         1+2+3",      () -> { testExecute("1+2+3",       "[1, 2, +, 3, +]", 6);}),
